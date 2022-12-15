@@ -1,2 +1,0 @@
-(this["webpackJsonp@kiba/interface"]=this["webpackJsonp@kiba/interface"]||[]).push([[7],{1606:function(n,i){},1607:function(n,i){},1662:function(n,i){},1703:function(n,i){},1705:function(n,i){},1733:function(n,i){},1734:function(n,i){},1751:function(n,i){},1754:function(n,i){},1756:function(n,i){}}]);
-//# sourceMappingURL=7.7215ff60.chunk.js.map
