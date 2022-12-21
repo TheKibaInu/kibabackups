@@ -11,7 +11,7 @@ import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
 import Copy from './Copy'
 import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
 import Identicon from '../Identicon'
-import { InjectedConnector } from '@web3-react/injected-connector'
+
 import { ExternalLink as LinkIcon } from 'react-feather'
 import PortisIcon from '../../assets/images/portisIcon.png'
 import { SUPPORTED_WALLETS } from '../../constants/wallet'
