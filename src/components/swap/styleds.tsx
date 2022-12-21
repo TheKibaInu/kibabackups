@@ -6,9 +6,21 @@ import { ReactNode } from 'react'
 import { Text } from 'rebass'
 import { transparentize } from 'polished'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div <{ isMobile?: boolean}>`
   position: relative;
-  padding: 40px;
+  padding: ${({ isMobile}) => (isMobile ? '1rem' : '40px' )};
+  overflow: hidden;
+
+  > [aria-modal="true"] {
+    background: #222;
+  }
+  .dFigrI[data-reach-dialog-content] {
+    background:#222;
+  }
+`
+export const MobileWrapper = styled.div`
+  position: relative;
+  padding: 1rem;
   overflow: hidden;
 
   > [aria-modal="true"] {

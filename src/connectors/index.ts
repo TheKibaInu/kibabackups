@@ -2,7 +2,7 @@ import { ALL_SUPPORTED_CHAIN_IDS, SupportedChainId } from '../constants/chains'
 
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { FortmaticConnector } from './Fortmatic'
-import { InjectedConnector } from '@web3-react/injected-connector'
+import { InjectedConnector } from "@web3-react/injected-connector"
 import { NetworkConnector } from './NetworkConnector'
 import { PortisConnector } from '@web3-react/portis-connector'
 import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react'
@@ -50,9 +50,9 @@ export const injected = new InjectedConnector({
 })
 
 export const blockWalletConnector = {
-  ...new InjectedConnector({supportedChainIds: ALL_SUPPORTED_CHAIN_IDS}),
+  ...new InjectedConnector({ supportedChainIds: ALL_SUPPORTED_CHAIN_IDS }),
   activate: async () => {
-     await (window as any)?.ethereum?.request({ method: 'eth_requestAccounts' }).catch((error: any) => {
+    await (window as any)?.ethereum?.request({ method: 'eth_requestAccounts' }).catch((error: any) => {
       if (error.code === 4001) {
         // See: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1193.md#provider-errors
         console.log('Connection rejected.');
@@ -63,7 +63,7 @@ export const blockWalletConnector = {
   },
   deactivate: () => {
     // Runs only they are brand new, or have hit the disconnect button
-     (window?.ethereum as any)?.request({
+    (window?.ethereum as any)?.request({
       method: "wallet_requestPermissions",
       params: [
         {
@@ -72,7 +72,7 @@ export const blockWalletConnector = {
       ]
     });
   }
-} 
+}
 
 export const gnosisSafe = new SafeAppConnector()
 
@@ -81,7 +81,6 @@ export const walletconnect = new WalletConnectConnector({
   rpc: NETWORK_URLS,
   bridge: WALLETCONNECT_BRIDGE_URL,
   qrcode: true,
-  pollingInterval: 15000,
   //infuraId: INFURA_KEY,
 })
 

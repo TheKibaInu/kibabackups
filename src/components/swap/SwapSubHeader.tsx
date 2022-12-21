@@ -7,10 +7,11 @@ import { ArrowUpRight } from 'react-feather'
 import styled, { ThemeContext } from 'styled-components/macro'
 import { RowBetween, RowFixed } from '../Row'
 import SettingsTab from '../Settings'
+import { useIsMobile } from 'pages/Swap/SelectiveCharting'
 
 
-const StyledSwapHeader = styled.div`
-  padding: 30px 45px 10px 45px;
+const StyledSwapHeader = styled.div <{ isMobile?: boolean}>`
+  padding: ${({ isMobile}) => (isMobile ? '20px 25px 10px 25px' : '30px 45px 10px 45px')};
   width: 100%;
   color: ${({ theme }) => theme.text1};
   background: ${({ theme }) => theme.bg0};
@@ -22,8 +23,9 @@ const theme = useContext(ThemeContext)
 const [gasSettingsOpen, setGasSettingsOpen] = React.useState(false);
 const openGasSettings = () => setGasSettingsOpen(true)
 const closeGasSettings = () => setGasSettingsOpen(false)
+const isMobile = useIsMobile()
   return (
-    <StyledSwapHeader>
+    <StyledSwapHeader isMobile={isMobile}>
       <RowBetween>
         <RowFixed>
       <GasSelectorModal isOpen={gasSettingsOpen} onDismiss={closeGasSettings} />

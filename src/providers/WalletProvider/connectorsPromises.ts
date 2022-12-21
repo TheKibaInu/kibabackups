@@ -4,7 +4,7 @@ export const injected: (chainId: number) => Promise<AbstractConnector> = (
   chainId
 ) => {
   return new Promise((resolve) => {
-    import("@web3-react/injected-connector").then((all) => {
+    import('@web3-react/injected-connector').then((all) => {
       const connector = new all.InjectedConnector({
         supportedChainIds: [chainId],
       });

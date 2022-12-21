@@ -229,14 +229,8 @@ export function useBscToken(tokenAddress?: string): Token | undefined | null {
     tokenNameBytes32.result,
   ])
 }
-export function useBinanceCurrency(currencyId: string | undefined): Currency | null | undefined {
-  const isBNB = currencyId?.toUpperCase() === 'BNB'
-  const isKiba = currencyId?.toLowerCase() === '0xc3afde95b6eb9ba8553cdaea6645d45fb3a7faf5'.toLowerCase()
-  const token = useBscToken(isBNB || isKiba ? undefined : currencyId)
-  if (!currencyId) return
-  return isBNB ? binanceTokens.bnb
-    : isKiba ? new Token(56, '0xc3afde95b6eb9ba8553cdaea6645d45fb3a7faf5', 9, 'KIBA', 'Kiba Inu') : token
-}
+
+
 
 
 /**
@@ -244,7 +238,7 @@ export function useBinanceCurrency(currencyId: string | undefined): Currency | n
  * Returns null if token is loading or null was passed.
  * Returns undefined if tokenAddress is invalid or token does not exist.
  */
- export function useTokenFromActiveNetwork(tokenAddress: string | undefined): Token | null | undefined {
+export function useTokenFromActiveNetwork(tokenAddress: string | undefined): Token | null | undefined {
   const { chainId } = useWeb3React()
 
   const formattedAddress = isAddress(tokenAddress)
@@ -298,14 +292,14 @@ export function useTokenFromMapOrNetwork(tokens: TokenMap, tokenAddress?: string
   return tokenFromNetwork ?? token
 }
 
-export  function useNativeCurrency(): any | Token {
+export function useNativeCurrency(): any | Token {
   const { chainId } = useWeb3React()
   return useMemo(
     () =>
       chainId
         ? nativeOnChain(chainId)
         : // display mainnet when not connected
-          nativeOnChain(1),
+        nativeOnChain(1),
     [chainId]
   )
 }
@@ -314,7 +308,7 @@ export  function useNativeCurrency(): any | Token {
  * Returns null if currency is loading or null was passed.
  * Returns undefined if currencyId is invalid or token does not exist.
  */
- export function useCurrencyFromMap(tokens: TokenMap, currencyId?: string | null): Currency | null | undefined {
+export function useCurrencyFromMap(tokens: TokenMap, currencyId?: string | null): Currency | null | undefined {
   const nativeCurrency = useNativeCurrency()
   const { chainId } = useWeb3React()
   const isNative = Boolean(nativeCurrency && currencyId?.toUpperCase() === 'ETH')
@@ -336,7 +330,7 @@ export  function useNativeCurrency(): any | Token {
 
 export function useCurrency(currencyId?: string | null): Currency | null | undefined {
   const tokens = useAllTokens()
-  const {chainId} = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
   const mapToken = useCurrencyFromMap(tokens, currencyId)
   const ethToken = useEthereumCurrency(Boolean(chainId && chainId === 1) ? currencyId ?? undefined : undefined)
   return chainId && chainId === 1 ? ethToken ?? mapToken : mapToken
@@ -345,11 +339,9 @@ export function useCurrency(currencyId?: string | null): Currency | null | undef
 export function useEthereumCurrency(currencyId: string | undefined): Currency | null | undefined {
   const { chainId } = useActiveWeb3React()
   const isETH = currencyId?.toUpperCase() === 'ETH'
-  const token = useToken(chainId === 1 ? (isETH ? undefined : currencyId) : undefined )
-  const binanceCurrency = useBinanceCurrency(chainId === 56 ? currencyId : undefined)
+  const token = useToken(chainId === 1 ? (isETH ? undefined : currencyId) : undefined)
   const extendedEther = useMemo(() => (chainId ? ExtendedEther.onChain(chainId) : undefined), [chainId])
-  
-  if (chainId === 56) return binanceCurrency
+
   const weth = chainId ? WETH9_EXTENDED[chainId] : undefined
   if (weth?.address?.toLowerCase() === currencyId?.toLowerCase()) return weth
   return isETH ? extendedEther : token

@@ -71,13 +71,13 @@ const CurrencySelect = styled(ButtonGray) <{ isMobile?: boolean, selected: boole
   font-weight: 500;
   background-color: '${({ selected, theme }) => (selected ? theme.bg6 : theme.bg6)}';
   color: ${({ selected, theme }) => (selected ? theme.text1 : theme.text4)};
-  border-radius: 16px;
+  border-radius: ${({ isMobile}) => (isMobile ? '.6rem' : '1rem')};
   outline: none;
   cursor: pointer;
   user-select: none;
   ${props => props.isMobile ? 'padding-left:5px; padding-right:5px;' : ''}
   border: none;
-  height: ${({ hideInput }) => (hideInput ? '2.8rem' : '2.8rem')};
+  height: ${({ hideInput }) => (hideInput ? '3rem' : '3rem')};
   width: ${({ hideInput }) => (hideInput ? '100%' : 'initial')};
   justify-content: space-between;
   margin-right: ${({ isMobile, hideInput }) => (hideInput || isMobile ? '0' : '12px')};
@@ -130,9 +130,9 @@ const StyledDropDown = styled(DropDown) <{ selected: boolean }>`
 const StyledTokenName = styled.span<{ isMobile?: boolean, active?: boolean }>`
   color: ${({ theme }) => (theme.text1)}},
   ${({ active }) => (active ? '  margin: 0 0.25rem 0 0.25rem;' : '  margin: 0 0.25rem 0 0.25rem;')}
-  font-size:  ${({ active, isMobile }) => isMobile ? '14px' : (active ? '20px' : '20px')};
-  font-family: 'Poppins';
-  font-weight: ${({ active }) => (active ? '700' : '500')};
+  font-size:  ${({ active, isMobile }) => isMobile ? '1.2rem' : (active ? '20px' : '20px')};
+  font-family: 'Inter Var';
+  font-weight: ${({ active }) => (active ? '600' : '400')};
 `
 
 const StyledBalanceMax = styled.button<{ isMobile?: boolean, disabled?: boolean }>`
@@ -226,7 +226,7 @@ export default function CurrencyInputPanel({
         </FixedContainer>
       )}
 
-      <Container hideInput={hideInput}>
+      <Container hideInput={hideInput} style={{ marginLeft: isMobile ? '.5rem' : '0'}}>
         <InputRow isMobile={isMobile} style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={!onCurrencySelect}>
           <CurrencySelect
             selected={!!currency}
@@ -240,7 +240,7 @@ export default function CurrencyInputPanel({
             }}
           >
             <Aligner>
-              <RowFixed>
+              <RowFixed style={{ marginLeft: isMobile ? '.5rem' : '0'}}>
                 {pair ? (
                   <span style={{ marginRight: '0.5rem' }}>
                     <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
@@ -258,7 +258,7 @@ export default function CurrencyInputPanel({
                       ? currency.symbol.slice(0, 4) +
                       '...' +
                       currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                      : currency?.symbol) || <span style={{ fontSize: isMobile ? 12 : 14 }}>Select a token</span>}
+                      : currency?.symbol) || <span style={{ fontSize: isMobile ? '1.2rem' : 20 }}>Select Token</span>}
                   </StyledTokenName>
                 )}
               </RowFixed>

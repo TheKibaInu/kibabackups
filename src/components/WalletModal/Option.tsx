@@ -28,6 +28,7 @@ const OptionCardLeft = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
   justify-content: center;
   height: 100%;
+  padding-right: 10px;
 `
 
 const OptionCardClickable = styled(OptionCard as any)<{active?:boolean, clickable?: boolean }>`

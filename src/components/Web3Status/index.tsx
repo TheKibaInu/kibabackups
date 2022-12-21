@@ -231,7 +231,7 @@ function Web3StatusInner() {
       </Web3StatusError>
     )
   } else {
-    if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+     
     return (
       <Web3StatusConnect id="connect-wallet" onClick={toggleWalletModal} faded={!account}>
         <Text>
@@ -239,9 +239,7 @@ function Web3StatusInner() {
         </Text>
       </Web3StatusConnect>
     )
-    } else {
-      return <OnboardingButton />
-    }
+   
   }
 }
 

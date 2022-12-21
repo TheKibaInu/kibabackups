@@ -22,7 +22,7 @@ import QuestionHelper from 'components/QuestionHelper'
 import ReactGA from 'react-ga'
 import { SUPPORTED_WALLETS } from '../../constants/wallet'
 import { Trans } from '@lingui/macro'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+
 import { flex } from 'styled-system'
 import styled, { css, ThemeContext } from 'styled-components/macro'
 import usePrevious from '../../hooks/usePrevious'
@@ -195,12 +195,8 @@ export default function WalletModal({
     setPendingWallet(connector) // set wallet for pending view
     setWalletView(WALLET_VIEWS.PENDING)
 
-    // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
 
-    console.dir(connector)
-    if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
-      connector.walletConnectProvider = undefined
-    }
+
 
     connector &&
       activate(connector, undefined, true).catch((error) => {

@@ -713,7 +713,7 @@ export default function Swap({ history }: RouteComponentProps) {
           <>
             {view === 'swap' && chainId && <SwapSubHeader allowedSlippage={allowedSlippage} />}
 
-            {view === 'swap' && <Wrapper id="swap-page" style={{ background: theme.bg0, borderBottomRightRadius: 24, borderBottomLeftRadius: 24, paddingTop: 5 }}>
+            {view === 'swap' && <Wrapper id="swap-page" isMobile={isMobile} style={{ background: theme.bg0, borderBottomRightRadius: 24, borderBottomLeftRadius: 24, paddingTop: 5 }}>
 
               <ConfirmSwapModal
                 isOpen={showConfirm}
