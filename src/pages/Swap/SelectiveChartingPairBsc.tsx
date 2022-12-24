@@ -269,7 +269,7 @@ const usdcAndEthFormatted = {
         ref.current = currency;
         setSelectedCurrency({ type: "update", payload: currency });
         const currencyAddress = currency?.address || currency?.wrapped?.address;
-        history.push(
+        navigate(
             `/selective-charts/${toChecksum(currencyAddress)}/${currency?.symbol}/${currency.name}/${currency.decimals}`
         );
         setAddress(currencyAddress);

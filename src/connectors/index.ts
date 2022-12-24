@@ -1,4 +1,4 @@
-import { ALL_SUPPORTED_CHAIN_IDS, SupportedChainId } from '../constants/chains'
+import { ALL_SUPPORTED_CHAIN_IDS, INJECT_SUPPORTED_CHAIN_IDS, SupportedChainId, WC_SUPPORTED_CHAIN_IDS } from '../constants/chains'
 
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { FortmaticConnector } from './Fortmatic'
@@ -45,9 +45,11 @@ export function getNetworkLibrary(): Web3Provider {
   return (networkLibrary = networkLibrary ?? getLibrary(network.provider))
 }
 
-export const injected = new InjectedConnector({
-  supportedChainIds: ALL_SUPPORTED_CHAIN_IDS,
-})
+
+const injectedConnectorParam = {
+  supportedChainIds: INJECT_SUPPORTED_CHAIN_IDS,
+}
+export const injected = new InjectedConnector(injectedConnectorParam)
 
 export const blockWalletConnector = {
   ...new InjectedConnector({ supportedChainIds: ALL_SUPPORTED_CHAIN_IDS }),
@@ -77,9 +79,9 @@ export const blockWalletConnector = {
 export const gnosisSafe = new SafeAppConnector()
 
 export const walletconnect = new WalletConnectConnector({
-  supportedChainIds: ALL_SUPPORTED_CHAIN_IDS,
+  supportedChainIds: WC_SUPPORTED_CHAIN_IDS,
   rpc: NETWORK_URLS,
-  bridge: WALLETCONNECT_BRIDGE_URL,
+  bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
   //infuraId: INFURA_KEY,
 })

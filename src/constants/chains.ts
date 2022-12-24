@@ -19,10 +19,24 @@ export enum SupportedChainId {
   POLYGON = 137,
   POLYGON_MUMBAI = 80001,
 }
-
+export const CHAIN_IDS_TO_NAMES = {
+  [SupportedChainId.MAINNET]: 'mainnet',
+  [SupportedChainId.ROPSTEN]: 'ropsten',
+  [SupportedChainId.RINKEBY]: 'rinkeby',
+  [SupportedChainId.GOERLI]: 'goerli',
+  [SupportedChainId.KOVAN]: 'kovan',
+  [SupportedChainId.POLYGON]: 'polygon',
+  [SupportedChainId.POLYGON_MUMBAI]: 'polygon_mumbai',
+  [SupportedChainId.ARBITRUM_ONE]: 'arbitrum',
+  [SupportedChainId.ARBITRUM_RINKEBY]: 'arbitrum_rinkeby',
+  [SupportedChainId.OPTIMISM]: 'optimism',
+}
 const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
 if (typeof INFURA_KEY === 'undefined') {
   throw new Error(`REACT_APP_INFURA_KEY must be a defined environment variable`)
+}
+export function isSupportedChain(chainId: number | null | undefined): chainId is SupportedChainId {
+  return !!chainId && !!SupportedChainId[chainId]
 }
 
 /**
@@ -31,6 +45,20 @@ if (typeof INFURA_KEY === 'undefined') {
 export const ALL_SUPPORTED_CHAIN_IDS: SupportedChainId[] = Object.values(SupportedChainId).filter(
   (id) => typeof id === 'number'
 ) as SupportedChainId[]
+
+export const WC_SUPPORTED_CHAIN_IDS: SupportedChainId[] = [
+  SupportedChainId.MAINNET,
+  SupportedChainId.BINANCE,
+  SupportedChainId.ROPSTEN,
+  SupportedChainId.RINKEBY,
+  SupportedChainId.GOERLI,
+  SupportedChainId.KOVAN,
+  SupportedChainId.POLYGON,
+]
+export const INJECT_SUPPORTED_CHAIN_IDS: SupportedChainId[] = [
+  SupportedChainId.MAINNET,
+  SupportedChainId.BINANCE,
+]
 
 /**
  * All the chain IDs that are running the Ethereum protocol.
@@ -117,6 +145,11 @@ interface BaseChainInfo {
   readonly logoUrl: string
   readonly label: string
   readonly helpCenterUrl?: string
+  readonly nativeCurrency: {
+    name: string // e.g. 'Goerli ETH',
+    symbol: string // e.g. 'gorETH',
+    decimals: number // e.g. 18,
+  }
   readonly addNetworkInfo: AddNetworkInfo
 }
 
@@ -147,6 +180,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     infoLink: 'https://binance.org',
     label: 'BSC',
     logoUrl: 'https://cryptologos.cc/logos/binance-coin-bnb-logo.png',
+    nativeCurrency: { name: "Binance Token", symbol: "BNB", decimals: 18 },
     addNetworkInfo: {
       nativeCurrency: { name: "Binance Token", symbol: "BNB", decimals: 18 },
       rpcUrl: INFURA_NETWORK_URLS[SupportedChainId.BINANCE]
@@ -171,6 +205,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     infoLink: 'https://info.uniswap.org/#/',
     label: 'Ethereum',
     logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/1200px-Ethereum-icon-purple.svg.png',
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     addNetworkInfo: {
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
       rpcUrl: INFURA_NETWORK_URLS[SupportedChainId.MAINNET],
@@ -183,6 +218,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     infoLink: 'https://info.uniswap.org/#/',
     label: 'Rinkeby',
     logoUrl: '',
+    nativeCurrency: { name: 'Rinkeby Ether', symbol: 'rETH', decimals: 18 },
     addNetworkInfo: {
       nativeCurrency: { name: 'Rinkeby Ether', symbol: 'rETH', decimals: 18 },
       rpcUrl: INFURA_NETWORK_URLS[SupportedChainId.RINKEBY],
@@ -195,6 +231,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     infoLink: 'https://info.uniswap.org/#/',
     label: 'Ropsten',
     logoUrl: '',
+    nativeCurrency: { name: 'Ropsten Ether', symbol: 'ropETH', decimals: 18 },
     addNetworkInfo: {
       nativeCurrency: { name: 'Ropsten Ether', symbol: 'ropETH', decimals: 18 },
       rpcUrl: INFURA_NETWORK_URLS[SupportedChainId.ROPSTEN],
@@ -207,6 +244,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     infoLink: 'https://info.uniswap.org/#/',
     label: 'Kovan',
     logoUrl: '',
+    nativeCurrency: { name: 'Kovan Ether', symbol: 'kovETH', decimals: 18 },
     addNetworkInfo: {
       nativeCurrency: { name: 'Kovan Ether', symbol: 'kovETH', decimals: 18 },
       rpcUrl: INFURA_NETWORK_URLS[SupportedChainId.KOVAN],
@@ -219,6 +257,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     infoLink: 'https://info.uniswap.org/#/',
     label: 'Görli',
     logoUrl: '',
+    nativeCurrency: { name: 'Görli Ether', symbol: 'görETH', decimals: 18 },
     addNetworkInfo: {
       nativeCurrency: { name: 'Görli Ether', symbol: 'görETH', decimals: 18 },
       rpcUrl: INFURA_NETWORK_URLS[SupportedChainId.GOERLI],
@@ -236,6 +275,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     logoUrl: '',
     statusPage: 'https://optimism.io/status',
     helpCenterUrl: 'https://help.uniswap.org/en/collections/3137778-uniswap-on-optimistic-ethereum-oξ',
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     addNetworkInfo: {
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
       rpcUrl: 'https://mainnet.optimism.io',
@@ -253,6 +293,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     logoUrl: '',
     statusPage: 'https://optimism.io/status',
     helpCenterUrl: 'https://help.uniswap.org/en/collections/3137778-uniswap-on-optimistic-ethereum-oξ',
+    nativeCurrency: { name: 'Optimistic Kovan Ether', symbol: 'kovOpETH', decimals: 18 },
     addNetworkInfo: {
       nativeCurrency: { name: 'Optimistic Kovan Ether', symbol: 'kovOpETH', decimals: 18 },
       rpcUrl: 'https://kovan.optimism.io',
@@ -269,6 +310,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     logoUrl: 'https://pbs.twimg.com/profile_images/1490751860461953029/046qIxwT_400x400.jpg',
     defaultListUrl: 'https://bridge.arbitrum.io/token-list-42161.json',
     helpCenterUrl: 'https://help.uniswap.org/en/collections/3137787-uniswap-on-arbitrum',
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     addNetworkInfo: {
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
       rpcUrl: 'https://arb1.arbitrum.io/rpc',
@@ -285,6 +327,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     logoUrl: '',
     defaultListUrl: '',
     helpCenterUrl: 'https://help.uniswap.org/en/collections/3137787-uniswap-on-arbitrum',
+    nativeCurrency: { name: 'Rinkeby Arbitrum Ether', symbol: 'rinkArbETH', decimals: 18 },
     addNetworkInfo: {
       nativeCurrency: { name: 'Rinkeby Arbitrum Ether', symbol: 'rinkArbETH', decimals: 18 },
       rpcUrl: 'https://rinkeby.arbitrum.io/rpc',
@@ -299,6 +342,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     infoLink: 'https://info.uniswap.org/#/polygon/',
     label: 'Polygon',
     logoUrl: '',
+    nativeCurrency: { name: 'Polygon Matic', symbol: 'MATIC', decimals: 18 },
     addNetworkInfo: {
       rpcUrl: 'https://polygon-rpc.com/',
       nativeCurrency: { name: 'Polygon Matic', symbol: 'MATIC', decimals: 18 },
@@ -313,10 +357,24 @@ export const CHAIN_INFO: ChainInfoMap = {
     infoLink: 'https://info.uniswap.org/#/polygon/',
     label: 'Polygon Mumbai',
     logoUrl: '',
+    nativeCurrency: { name: 'Polygon Mumbai Matic', symbol: 'mMATIC', decimals: 18 },
     addNetworkInfo: {
       nativeCurrency: { name: 'Polygon Mumbai Matic', symbol: 'mMATIC', decimals: 18 },
       rpcUrl: 'https://rpc-endpoints.superfluid.dev/mumbai',
     },
   },
+}
 
+export function getChainInfo(chainId: SupportedL1ChainId): L1ChainInfo
+export function getChainInfo(chainId: SupportedL2ChainId): L2ChainInfo
+export function getChainInfo(chainId: SupportedChainId): L1ChainInfo | L2ChainInfo
+export function getChainInfo(
+  chainId: SupportedChainId | SupportedL1ChainId | SupportedL2ChainId | number | undefined
+): L1ChainInfo | L2ChainInfo | undefined
+
+export function getChainInfo(chainId: any): any {
+  if (chainId) {
+    return CHAIN_INFO[chainId] ?? undefined
+  }
+  return undefined
 }

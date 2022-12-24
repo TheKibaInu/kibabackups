@@ -11,6 +11,8 @@ import mintV3 from './mint/v3/reducer'
 import lists from './lists/reducer'
 import burn from './burn/reducer'
 import burnV3 from './burn/v3/reducer'
+import connection from './connection/reducer'
+import wallets from './wallets/reducer'
 import logs from './logs/slice'
 import multicall from './multicall/reducer'
 import { api as dataApi } from './data/slice'
@@ -26,7 +28,9 @@ const store = configureStore({
   reducer: {
     application,
     user,
+    connection,
     transactions,
+    wallets,
     swap,
     mint,
     mintV3,

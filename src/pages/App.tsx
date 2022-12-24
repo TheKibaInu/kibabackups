@@ -1,6 +1,6 @@
 import { AccountPage, AccountPageWithAccount } from './Account/AccountPage'
 import { FomoPage, LimitOrders } from 'state/transactions/hooks'
-import { HashRouter, Route, Switch } from 'react-router-dom'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 import Header, { EmbedModel, useIsEmbedMode } from 'components/Header';
 import React, { useState } from 'react'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects';
@@ -155,8 +155,8 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <Route component={DarkModeQueryParamReader} />
-      <Route component={ApeModeQueryParamReader} />
+      <DarkModeQueryParamReader/>
+      <ApeModeQueryParamReader/>
       <HashRouter>
         <SwapVolumeContextProvider chainId={chainId}>
           <Web3ReactManager>
@@ -198,79 +198,77 @@ export default function App() {
                     </>}
                     <TopLevelModals />
                     {<KibaNftAlert />}
-                    <Switch>
-                      <Route exact strict path="/nfts" component={Mint} />
-                      <Route exact strict path="/nfts/mint/:referrer" component={Mint} />
-                      <Route exact strict path="/reflections" component={LifetimeReflections} />
-                      <Route exact strict path="/details" component={AccountPage} />
-                      <Route exact strict path="/details/:account" component={AccountPageWithAccount} />
-                      <Route exact strict path="/limit" component={LimitOrders} />
+                    <Routes>
+                      <Route path="/nfts" element={Mint} />
+                      <Route path="/nfts/mint/:referrer" element={Mint} />
+                      <Route path="/reflections" element={LifetimeReflections} />
+                      <Route path="/details" element={AccountPage} />
+                      <Route path="/details/:account" element={AccountPageWithAccount} />
+                      <Route path="/limit" element={LimitOrders} />
 
                       {/* Chart Pages Routes */}
 
-                      {/* Entry page routes, this will show the search / select and recently viewed. All uses same component */}
-                      <Route exact strict path="/selective-charting" component={SelectiveChartWithPair} />
-                      <Route exact strict path="/selective-charts" component={SelectiveChartWithPair} />
+                      {/* Entry page routes, this will show the search / select and recently viewed. All uses same element */}
+                      <Route path="/selective-charting" element={SelectiveChartWithPair} />
+                      <Route path="/selective-charts" element={SelectiveChartWithPair} />
 
                       {/* Longer routes, with more parameters, kind of bad for users to have to share. Working on removing these */}
-                      <Route exact strict path="/selective-charting/:tokenAddress/:tokenSymbol/:name/:decimals" component={SelectiveChart} />
-                      <Route exact strict path="/selective-charting/:tokenAddress/:tokenSymbol/:name/:decimals/:pairAddress" component={SelectiveChart} />
-                      <Route exact strict path="/selective-charts/:tokenAddress/:tokenSymbol/:name" component={SelectiveChart} />
-                      <Route exact strict path="/selective-charts/:tokenAddress/:tokenSymbol/:name/:decimals" component={SelectiveChart} />
-                      <Route exact strict path="/selective-charts/:tokenAddress/:tokenSymbol/:name/:decimals/:pairAddress" component={SelectiveChart} />
+                      <Route path="/selective-charting/:tokenAddress/:tokenSymbol/:name/:decimals" element={SelectiveChart} />
+                      <Route path="/selective-charting/:tokenAddress/:tokenSymbol/:name/:decimals/:pairAddress" element={SelectiveChart} />
+                      <Route path="/selective-charts/:tokenAddress/:tokenSymbol/:name" element={SelectiveChart} />
+                      <Route path="/selective-charts/:tokenAddress/:tokenSymbol/:name/:decimals" element={SelectiveChart} />
+                      <Route path="/selective-charts/:tokenAddress/:tokenSymbol/:name/:decimals/:pairAddress" element={SelectiveChart} />
 
                       {/* Simpler route, takes only the pair address, the rest is computed from that */}
-                      <Route exact strict path="/selective-charting/:network/:pairAddress" component={SelectiveChartWithPair} />
-                      <Route exact strict path="/selective-charts/:network/:pairAddress" component={SelectiveChartWithPair} />
-                      <Route exact strict path="/charts/:network/:pairAddress" component={SelectiveChartWithPair} />
-                      <Route exact strict path="/charts" component={SelectiveChartWithPair} />
+                      <Route path="/selective-charting/:network/:pairAddress" element={SelectiveChartWithPair} />
+                      <Route path="/selective-charts/:network/:pairAddress" element={SelectiveChartWithPair} />
+                      <Route path="/charts/:network/:pairAddress" element={SelectiveChartWithPair} />
+                      <Route path="/charts" element={SelectiveChartWithPair} />
 
-                      <Route exact strict path="/bridge" component={Bridge} />
+                      <Route path="/bridge" element={Bridge} />
                       {/* End Chart Pages Routes */}
 
-                      <Route exact strict path="/fomo" component={FomoPage} />
-                      <Route exact strict path="/donation-tracker" component={DonationTracker} />
-                      <Route exact strict path="/tracker" component={GainsTracker} />
-                      <Route exact strict path="/suite" component={Suite} />
-                      <Route exact strict path="/transactions" component={Transactions} />
-                      <Route exact strict path="/gains" component={GainsPage} />
-                      <Route exact strict path="/honeypot-checker" component={HoneyPotDetector} />
-                      <Route exact strict path="/dashboard" component={VotePage} />
-                      <Route exact strict path="/vote" component={Vote} />
-                      <Route exact strict path="/vote/:id" component={VotePageV2} />
-                      <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
-                      <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
-                      <Route exact strict path="/swap" component={Swap} />
-                      <Route exact strict path="/pool/v2/find" component={PoolFinder} />
-                      <Route exact strict path="/pool/v2" component={PoolV2} />
-                      <Route exact strict path="/pool" component={Pool} />
-                      <Route exact strict path="/pool/:tokenId" component={PositionPage} />
-                      <Route exact strict path="/add/v2/:currencyIdA?/:currencyIdB?" component={RedirectDuplicateTokenIdsV2} />
+                      <Route path="/fomo" element={FomoPage} />
+                      <Route path="/donation-tracker" element={DonationTracker} />
+                      <Route path="/tracker" element={GainsTracker} />
+                      <Route path="/suite" element={Suite} />
+                      <Route path="/transactions" element={Transactions} />
+                      <Route path="/gains" element={GainsPage} />
+                      <Route path="/honeypot-checker" element={HoneyPotDetector} />
+                      <Route path="/dashboard" element={VotePage} />
+                      <Route path="/vote" element={Vote} />
+                      <Route path="/vote/:id" element={VotePageV2} />
+                      <Route path="/send" element={RedirectPathToSwapOnly} />
+                      <Route path="/swap/:outputCurrency" element={RedirectToSwap} />
+                      <Route path="/swap" element={Swap} />
+                      <Route path="/pool/v2/find" element={PoolFinder} />
+                      <Route path="/pool/v2" element={PoolV2} />
+                      <Route path="/pool" element={Pool} />
+                      <Route path="/pool/:tokenId" element={PositionPage} />
+                      <Route path="/add/v2/:currencyIdA?/:currencyIdB?" element={RedirectDuplicateTokenIdsV2} />
                       <Route
-                        exact
-                        strict
+        
                         path="/add/:currencyIdA?/:currencyIdB?/:feeAmount?"
-                        component={RedirectDuplicateTokenIds}
+                        element={RedirectDuplicateTokenIds}
                       />
 
                       <Route
-                        exact
-                        strict
+                       
                         path="/increase/:currencyIdA?/:currencyIdB?/:feeAmount?/:tokenId?"
-                        component={AddLiquidity}
+                        element={AddLiquidity}
                       />
 
-                      <Route exact strict path="/remove/v2/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
-                      <Route exact strict path="/remove/:tokenId" component={RemoveLiquidityV3} />
+                      <Route path="/remove/v2/:currencyIdA/:currencyIdB" element={RemoveLiquidity} />
+                      <Route path="/remove/:tokenId" element={RemoveLiquidityV3} />
 
-                      <Route exact strict path="/migrate/v2" component={MigrateV2} />
-                      <Route exact strict path="/migrate/v2/:address" component={MigrateV2Pair} />
+                      <Route path="/migrate/v2" element={MigrateV2} />
+                      <Route path="/migrate/v2/:address" element={MigrateV2Pair} />
 
-                      <Route exact strict path="/proposals" component={CreateProposal} />
-                      <Route exact strict path="/charts" component={ChartPage} />
+                      <Route path="/proposals" element={CreateProposal} />
+                      <Route path="/charts" element={ChartPage} />
 
-                      <Route component={RedirectPathToSwapOnly} />
-                    </Switch>
+                      <Route element={RedirectPathToSwapOnly} />
+                    </Routes>
                     {/* {embedModel.embedMode == false && (
                        <AppBody style={{
                         boxShadow:

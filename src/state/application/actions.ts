@@ -1,12 +1,17 @@
 import { createAction } from '@reduxjs/toolkit'
+import { SupportedChainId } from 'constants/chains'
 
-export type PopupContent = {
-  txn: {
-    hash: string
-    success: boolean
-    summary?: string
+export type PopupContent =
+  | {
+    txn: {
+      hash: string
+      success: boolean
+      summary?: string
+    }
   }
-}
+  | {
+    failedSwitchNetwork: SupportedChainId
+  }
 
 export enum ApplicationModal {
   WALLET,

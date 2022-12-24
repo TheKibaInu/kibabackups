@@ -49,7 +49,7 @@ import _ from "lodash";
 import { useBuySellTax } from "pages/Charts/hooks";
 import { useConvertTokenAmountToUsdString } from "pages/Vote/VotePage";
 import useCopyClipboard from 'hooks/useCopyClipboard'
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTokenBalance } from "state/wallet/hooks";
 import { useWeb3React } from "@web3-react/core";
 
@@ -108,7 +108,7 @@ const WrapperCard = styled(DarkCard) <{ embedModel: EmbedModel, darkMode?: boole
 export const SelectiveChartWithPair = () => {
     const ref = React.useRef<any>();
     const { account, chainId } = useWeb3React();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [copied, copy] = useCopyClipboard()
     const params = useParams<{
         pairAddress?: string;
@@ -393,7 +393,7 @@ export const SelectiveChartWithPair = () => {
         ref.current = currency;
         setSelectedCurrency({ type: "update", payload: currency });
         const currencyAddress = currency?.address || currency?.wrapped?.address;
-        history.push(
+        navigate(
             `/selective-charts/${toChecksum(currencyAddress)}/${currency?.symbol}/${currency.name}/${currency.decimals}`
         );
         setAddress(currencyAddress);

@@ -18,7 +18,7 @@ import { lighten } from 'polished'
 import styled from 'styled-components/macro'
 import { useActiveWeb3React } from 'hooks/web3'
 import useDebounce from 'hooks/useDebounce'
-import { useHistory } from 'react-router'
+import {  useNavigate } from 'react-router'
 import { useIsMobile } from 'pages/Swap/SelectiveCharting'
 import useTheme from 'hooks/useTheme'
 import { useUserSearchPrefManager } from 'state/user/hooks'
@@ -185,7 +185,7 @@ export const PairSearch = (props: Props) => {
   const [fetching, setFetching] = React.useState(false)
   const [results, setResults] = React.useState<Pair[]>()
   const onTermChanged = (event: any) => setSearchTerm(event.target.value)
-  const history = useHistory()
+  const navigate = useNavigate()
   const handleError = (e: any) => console.error(e)
   const [routing, setRouting] = React.useState(false)
   const WEB3_ENDPOINT = useWeb3Endpoint()
@@ -214,7 +214,7 @@ export const PairSearch = (props: Props) => {
     // const humanReadable = ethers.BigNumber.from(decimals).toNumber()
     onPairSelect && onPairSelect(pair)
     // history.push(`/selective-charts/${pair.baseToken.address}/${pair.baseToken.symbol}/${pair.baseToken.name}/${humanReadable}/${pair.pairAddress}`)
-    history.push(`/selective-charts/${pair.chainId}/${pair.pairAddress}`)
+    navigate(`/selective-charts/${pair.chainId}/${pair.pairAddress}`)
     setSearchTerm('')
     setRouting(false)
   }, [onPairSelect])
