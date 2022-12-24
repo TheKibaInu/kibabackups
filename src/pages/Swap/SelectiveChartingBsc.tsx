@@ -312,7 +312,7 @@ export const SelectiveChartBsc = () => {
       isNative: false,
     };
     setSelectedCurrency({ type: "update", payload: ref.current });
-    history.goBack();
+    navigate(-1);
   }, [ref.current]);
 
   const formatPriceLabel = (key: string) => {
