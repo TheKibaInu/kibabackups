@@ -10,7 +10,7 @@ import { ButtonOutlined, ButtonSecondary } from "components/Button"
 import { Currency, Token } from "@uniswap/sdk-core";
 import { DarkCard, LightCard } from "components/Card";
 import React, { useEffect, useState } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { StyledInternalLink, TYPE } from "theme";
 import { darken, lighten } from "polished";
 import styled, { useTheme } from "styled-components/macro";
@@ -46,6 +46,7 @@ import useLast from "hooks/useLast";
 import { useTokenBalance } from "state/wallet/hooks";
 import { useUserChartHistoryManager } from "state/user/hooks";
 import { useWeb3React } from "@web3-react/core";
+import { Redirect } from "./redirects";
 
 export const useIsMobile = () => {
   const [width, setWidth] = useState(window.innerWidth);
@@ -98,7 +99,7 @@ const WrapperCard = styled(DarkCard) <{ gridTemplateColumns: string, isMobile: b
 export const SelectiveChart = () => {
   const ref = React.useRef<any>();
   const { account, chainId } = useWeb3React();
-  const history = useHistory();
+  const navigate = useNavigate();
   const lastChainId = useLast(chainId)
   const params = useParams<{
     tokenAddress?: string;
@@ -233,7 +234,7 @@ export const SelectiveChart = () => {
   const chainChanged = Boolean(chainId) && Boolean(lastChainId) && chainId !== lastChainId
   React.useEffect(() => {
     if (chainChanged && Boolean(params?.tokenAddress)) {
-      history.push(`/selective-charts`)
+      navigate(`/selective-charts`)
     }
   }, [chainChanged])
 
@@ -303,21 +304,6 @@ export const SelectiveChart = () => {
 
   const [copied, copy] = useCopyClipboard()
 
-  const backClick = React.useCallback(() => {
-    console.log("~history", history)
-    ref.current = {
-      equals: () => false,
-      address: undefined,
-      decimals: undefined,
-      symbol: undefined,
-      name: undefined,
-      isToken: false,
-      isNative: false,
-    };
-    setSelectedCurrency({ type: "update", payload: ref.current });
-    history.goBack();
-  }, [ref.current]);
-
   const shareClick = () => {
     if (navigator && navigator.share) {
       navigator.share({
@@ -367,7 +353,7 @@ export const SelectiveChart = () => {
     ref.current = currency;
     setSelectedCurrency({ type: "update", payload: currency });
     const currencyAddress = currency?.address || currency?.wrapped?.address;
-    history.push(
+    navigate(
       `/selective-charts/${toChecksum(currencyAddress)}/${currency?.symbol}/${currency.name}/${currency.decimals}`
     );
     setAddress(currencyAddress);

@@ -19,7 +19,7 @@ import { magicalGradientOnHover } from 'components/AndyComponents/common.css'
 import styled from 'styled-components/macro'
 import { useActiveWeb3React } from 'hooks/web3'
 import useDebounce from 'hooks/useDebounce'
-import { useHistory } from 'react-router'
+import {  useNavigate } from 'react-router'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import useTheme from 'hooks/useTheme'
 import { useUserSearchPrefManager } from 'state/user/hooks'
@@ -173,7 +173,7 @@ export const SearchBarNav = (props: Props) => {
   const searchTermDebounced = useDebounce(searchTerm, 500)
   const onTermChanged = (event: any) => setSearchTerm(event.target.value)
   const [results, setResults] = React.useState<Pair[]>()
-  const history = useHistory()
+  const navigate =  useNavigate()
   const [routing, setRouting] = React.useState(false)
   const [searchSettings, setSearchSettings] = useUserSearchPrefManager()
   const chainImageMap = {
@@ -285,7 +285,7 @@ user-select: none;
   const onPairClick = function (pair: Pair) {
     setRouting(true)
     onPairSelect && onPairSelect(pair)
-    history.push(`/selective-charts/${pair.chainId}/${pair.pairAddress}`)
+    navigate(`/selective-charts/${pair.chainId}/${pair.pairAddress}`)
     setSearchTerm('')
     setRouting(false)
   }

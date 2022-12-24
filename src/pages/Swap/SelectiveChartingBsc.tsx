@@ -41,7 +41,7 @@ import { TopTokenHolders } from "components/TopTokenHolders/TopTokenHolders";
 import _ from "lodash";
 import { isAddress } from "utils";
 import { useConvertTokenAmountToUsdString } from "pages/Vote/VotePage";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTokenBalance } from "state/wallet/hooks";
 import { useUserChartHistoryManager } from "state/user/hooks";
 import { useWeb3React } from "@web3-react/core";
@@ -109,7 +109,7 @@ type BscChartProps = {
 export const SelectiveChartBsc = () => {
   const ref = React.useRef<any>();
   const { account, chainId } = useWeb3React();
-  const history = useHistory();
+  const navigate = useNavigate();
   const params = useParams<{
     tokenAddress?: string;
     tokenSymbol?: string;
@@ -341,7 +341,7 @@ export const SelectiveChartBsc = () => {
     ref.current = currency;
     setSelectedCurrency({ type: "update", payload: currency });
     const currencyAddress = currency?.address || currency?.wrapped?.address;
-    history.push(
+    navigate(
       `/selective-charts/${toChecksum(currencyAddress)}/${currency?.symbol}/${currency.name}/${currency.decimals}`
     );
     setAddress(currencyAddress);

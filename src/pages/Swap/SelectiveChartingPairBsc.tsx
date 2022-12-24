@@ -41,7 +41,7 @@ import { TopTokenHolders } from "components/TopTokenHolders/TopTokenHolders";
 import _ from "lodash";
 import { isAddress } from "utils";
 import { useConvertTokenAmountToUsdString } from "pages/Vote/VotePage";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTokenBalance } from "state/wallet/hooks";
 import { useUserChartHistoryManager } from "state/user/hooks";
 import { useWeb3React } from "@web3-react/core";
@@ -109,7 +109,7 @@ type BscChartProps = {
 export const SelectiveChartWithPairBsc = React.memo(() => {
     const ref = React.useRef<any>();
     const { account, chainId } = useWeb3React();
-    const history = useHistory();
+    const navigate = useNavigate();
     const params = useParams<{
         pairAddress?: string;
     }>();

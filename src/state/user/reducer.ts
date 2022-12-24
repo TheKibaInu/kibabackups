@@ -9,6 +9,7 @@ import {
   updateFavoritedTokens,
   updateHideClosedPositions,
   updateMatchesDarkMode,
+  updateSelectedWallet,
   updateUseAutoSlippage,
   updateUserChartHistory,
   updateUserDarkMode,
@@ -22,7 +23,7 @@ import {
   updateUserSingleHopOnly,
   updateUserSlippageTolerance,
 } from './actions'
-
+import { ConnectionType } from 'connection'
 import { DEFAULT_DEADLINE_FROM_NOW } from '../../constants/misc'
 import { SupportedLocale } from 'constants/locales'
 import _ from 'lodash'
@@ -41,6 +42,8 @@ export type TokenFavorite = {
 
 export interface UserState {
   arbitrumAlphaAcknowledged: boolean
+
+  selectedWallet?: ConnectionType
 
   // the timestamp of the last updateVersion action
   lastUpdateVersionTimestamp?: number
@@ -85,10 +88,10 @@ export interface UserState {
     medium?: boolean,
     high?: boolean,
     ultra?: boolean,
-    useOnce?: boolean,    
+    useOnce?: boolean,
     custom?: any
   }
-  chartHistory?: any[] 
+  chartHistory?: any[]
   searchPreferences: SearchPreferenceState
   favorites: TokenFavorite[]
 }
@@ -100,7 +103,7 @@ function pairKey(token0Address: string, token1Address: string) {
 export type SearchPreferenceState = {
   networks: Array<{
     chainId: number;
-    network:string;
+    network: string;
     includeInResults: boolean
   }>;
 }
@@ -108,6 +111,7 @@ export type SearchPreferenceState = {
 export const initialState: UserState = {
   arbitrumAlphaAcknowledged: false,
   userDarkMode: null,
+  selectedWallet: undefined,
   matchesDarkMode: false,
   userExpertMode: false,
   userLocale: null,
@@ -122,21 +126,21 @@ export const initialState: UserState = {
   URLWarningVisible: true,
   useAutoSlippage: false,
   useFrontrunProtection: false,
-  detectRenouncedOwnership:false,
+  detectRenouncedOwnership: false,
   preferredGas: {
     low: false,
     medium: false,
     high: false,
-    ultra:false,
-    useOnce:false,
+    ultra: false,
+    useOnce: false,
     custom: 0
   },
   chartHistory: [],
   favorites: [],
   searchPreferences: {
     networks: [
-      {chainId: 1, network: 'ethereum', includeInResults: true}, 
-      {chainId: 56, network :'bsc', includeInResults: true}
+      { chainId: 1, network: 'ethereum', includeInResults: true },
+      { chainId: 56, network: 'bsc', includeInResults: true }
     ]
   }
 }
@@ -152,22 +156,22 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(updateUserChartHistory, (state, action) => {
       state.chartHistory = _.orderBy(
-          _.uniqBy(
-            [
-              ...action.payload.chartHistory,
-              ...(state.chartHistory ?? [])
-            ], 
-            item => item?.token?.address?.toLowerCase()
-          ), 
-          item => item.time,
-          'asc'
-        ).reverse().slice(0, 20)
-        state.timestamp = currentTimestamp()
+        _.uniqBy(
+          [
+            ...action.payload.chartHistory,
+            ...(state.chartHistory ?? [])
+          ],
+          item => item?.token?.address?.toLowerCase()
+        ),
+        item => item.time,
+        'asc'
+      ).reverse().slice(0, 20)
+      state.timestamp = currentTimestamp()
     })
     .addCase(updateUserFrontRunProtection, (state, action) => {
-        state.useFrontrunProtection = action.payload.useFrontrunProtection
-        state.timestamp = currentTimestamp()
-      })
+      state.useFrontrunProtection = action.payload.useFrontrunProtection
+      state.timestamp = currentTimestamp()
+    })
     .addCase(updateVersion, (state) => {
       // slippage isnt being tracked in local storage, reset to default
       // noinspection SuspiciousTypeOfGuard
@@ -205,6 +209,9 @@ export default createReducer(initialState, (builder) =>
       state.userDarkMode = action.payload.userDarkMode
       state.timestamp = currentTimestamp()
     })
+    .addCase(updateSelectedWallet, (state, { payload: { wallet } }) => {
+      state.selectedWallet = wallet
+    })
     .addCase(updateMatchesDarkMode, (state, action) => {
       state.matchesDarkMode = action.payload.matchesDarkMode
       state.timestamp = currentTimestamp()
@@ -236,9 +243,9 @@ export default createReducer(initialState, (builder) =>
       state.detectRenouncedOwnership = action.payload.detectRenouncedOwnership
       state.timestamp = currentTimestamp()
     })
-    .addCase(updateUserGasPreferences, (state,action) => {
-        state.preferredGas = action.payload
-        state.timestamp = currentTimestamp()
+    .addCase(updateUserGasPreferences, (state, action) => {
+      state.preferredGas = action.payload
+      state.timestamp = currentTimestamp()
     })
     .addCase(updateHideClosedPositions, (state, action) => {
       state.userHideClosedPositions = action.payload.userHideClosedPositions
@@ -252,7 +259,7 @@ export default createReducer(initialState, (builder) =>
       state.tokens[serializedToken.chainId][serializedToken.address] = serializedToken
       state.timestamp = currentTimestamp()
     })
-    .addCase(updateUseAutoSlippage, (state, action ) => {
+    .addCase(updateUseAutoSlippage, (state, action) => {
       state.useAutoSlippage = action.payload.useAutoSlippage;
       state.timestamp = currentTimestamp()
     })
